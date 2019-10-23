@@ -1,13 +1,15 @@
-package com.jnu.student.myfirstapplication;
+package com.jnu.student.myfirstapplication.data.model;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.Serializable;
 
 /**
  * Created by jszx on 2019/9/24.
  */
 
-public class Book {
+public class Book implements Serializable {
     private String name;
 
     private int imageId;

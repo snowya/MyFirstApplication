@@ -3,9 +3,6 @@ package com.jnu.student.myfirstapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -19,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jnu.student.myfirstapplication.data.FileDataSource;
+import com.jnu.student.myfirstapplication.data.model.Book;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,7 @@ public class BookListMainActivity extends AppCompatActivity {
     private List<Book> books = new ArrayList<>();
     private ListView booksList; //ListView对象
     private BookAdapter adapter;
+    private FileDataSource fileDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +166,19 @@ public class BookListMainActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        fileDataSource.save();
+        super.onDestroy();
+    }
+
     private void init() {
-        books.add(new Book("软件项目管理案例教程（第4版）", R.drawable.book_2));
-        books.add(new Book("创新工程实践", R.drawable.book_no_name));
-        books.add(new Book("信息安全数学基础（第2版）", R.drawable.book_1));
+        fileDataSource = new FileDataSource(this);
+        books = fileDataSource.load();
+        if(books.size()==0) {
+            books.add(new Book("软件项目管理案例教程（第4版）", R.drawable.book_2));
+            books.add(new Book("创新工程实践", R.drawable.book_no_name));
+            books.add(new Book("信息安全数学基础（第2版）", R.drawable.book_1));
+        }
     }
 }
