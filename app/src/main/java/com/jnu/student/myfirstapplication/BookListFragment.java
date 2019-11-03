@@ -2,15 +2,13 @@ package com.jnu.student.myfirstapplication;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
-import com.jnu.student.myfirstapplication.BookListMainActivity;
-import com.jnu.student.myfirstapplication.R;
 
 @SuppressLint("ValidFragment")
 public class BookListFragment extends Fragment {
@@ -27,6 +25,7 @@ public class BookListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_book_list, container, false);
         ListView listView = (ListView)view.findViewById(R.id.list_view_books);
         listView.setAdapter(bookAdapter);
+        this.registerForContextMenu(listView);
         return view;
     }
 }

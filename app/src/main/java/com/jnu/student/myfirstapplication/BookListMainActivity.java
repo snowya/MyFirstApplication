@@ -3,6 +3,9 @@ package com.jnu.student.myfirstapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -17,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jnu.student.myfirstapplication.data.BookFragmentPagerAdapter;
 import com.jnu.student.myfirstapplication.data.FileDataSource;
 import com.jnu.student.myfirstapplication.data.model.Book;
 
@@ -43,11 +47,32 @@ public class BookListMainActivity extends AppCompatActivity {
 
         init();
 
-        booksList = (ListView) findViewById(R.id.list_view_books);
+        // bookListFragment的数据填充
         adapter = new BookAdapter(BookListMainActivity.this, R.layout.book_item, books);
-        booksList.setAdapter(adapter);
+        BookListFragment bookListFragment = new BookListFragment(adapter);
 
-        this.registerForContextMenu(booksList);
+        // 两个webViewFragment的创建
+        WebViewFragment newsFragment = new WebViewFragment();
+        WebViewFragment sellersFragment = new WebViewFragment();
+
+        // 创建并设置Fragment和titles数组
+        ArrayList<Fragment> datas = new ArrayList<Fragment>();
+        ArrayList<String> titles = new ArrayList<String>();
+        datas.add(bookListFragment);
+        datas.add(newsFragment);
+        datas.add(sellersFragment);
+        titles.add("图书");
+        titles.add("新闻");
+        titles.add("卖家");
+        BookFragmentPagerAdapter myPagerAdapter = new BookFragmentPagerAdapter(getSupportFragmentManager());
+        myPagerAdapter.setDatas(datas);
+        myPagerAdapter.setTitles(titles);
+
+        // 将adapter、tableLayout和viewPager关联起来
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(myPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     public List<Book> getListBooks() {
@@ -75,7 +100,7 @@ public class BookListMainActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v == booksList) {
+        if (v == this.findViewById(R.id.list_view_books)) {
             int itemPosition = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;
             menu.setHeaderTitle(books.get(itemPosition).getName());
             menu.add(0, CONTENT_NEW, 0, "新建");
