@@ -3,10 +3,12 @@ package com.jnu.student.myfirstapplication;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import com.baidu.mapapi.SDKInitializer;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -36,7 +38,6 @@ public class BookListMainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_NEW_GOOD = 901;
     public static final int REQUEST_CODE_UPDATE_GOOD = 902;
     private List<Book> books = new ArrayList<>();
-    private ListView booksList; //ListView对象
     private BookAdapter adapter;
     private FileDataSource fileDataSource;
 
@@ -52,8 +53,10 @@ public class BookListMainActivity extends AppCompatActivity {
         BookListFragment bookListFragment = new BookListFragment(adapter);
 
         // 两个webViewFragment的创建
-        WebViewFragment newsFragment = new WebViewFragment();
-        WebViewFragment sellersFragment = new WebViewFragment();
+        WebFragment newsFragment = new WebFragment();
+        MapFragment sellersFragment = new MapFragment();
+        //初始化地图 SDK
+        SDKInitializer.initialize(getApplicationContext());
 
         // 创建并设置Fragment和titles数组
         ArrayList<Fragment> datas = new ArrayList<Fragment>();
