@@ -48,25 +48,23 @@ public class BookListMainActivity extends AppCompatActivity {
 
         init();
 
-        // bookListFragment的数据填充
-        adapter = new BookAdapter(BookListMainActivity.this, R.layout.book_item, books);
-        BookListFragment bookListFragment = new BookListFragment(adapter);
-
-        // 两个webViewFragment的创建
-        WebFragment newsFragment = new WebFragment();
-        MapFragment sellersFragment = new MapFragment();
         //初始化地图 SDK
         SDKInitializer.initialize(getApplicationContext());
 
         // 创建并设置Fragment和titles数组
         ArrayList<Fragment> datas = new ArrayList<Fragment>();
         ArrayList<String> titles = new ArrayList<String>();
-        datas.add(bookListFragment);
-        datas.add(newsFragment);
-        datas.add(sellersFragment);
+        adapter = new BookAdapter(BookListMainActivity.this, R.layout.book_item, books);
+        datas.add(new BookListFragment(adapter));
+        datas.add(new WebFragment());
+        datas.add(new MapFragment());
+        datas.add(new GameFragment());
+
         titles.add("图书");
         titles.add("新闻");
         titles.add("卖家");
+        titles.add("游戏");
+
         BookFragmentPagerAdapter myPagerAdapter = new BookFragmentPagerAdapter(getSupportFragmentManager());
         myPagerAdapter.setDatas(datas);
         myPagerAdapter.setTitles(titles);
