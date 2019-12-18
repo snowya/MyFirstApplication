@@ -87,6 +87,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     p.setColor(Color.WHITE);
 
                     for (Sprite sprite: sprites) {
+                        sprite.move();
                         if(!sprite.getBeat() && touchX>=sprite.getX() && touchX<=sprite.getX()+sprite.getMouse().getWidth() && touchY>=sprite.getY() && touchY<=sprite.getY()+sprite.getMouse().getHeight()) {
                             sprite.setBeat(true);
                             myScore++;
@@ -95,13 +96,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             ghost=changeBitmapSize(ghost,(float) 0.1*GameView.this.getWidth(),(float) 0.2*GameView.this.getHeight());
                         }
                         if(sprite.getBeat()) {
-                            canvas.drawBitmap(ghost,sprite.getX(),sprite.getY()-25,p);
+                            canvas.drawBitmap(ghost,sprite.getX(),sprite.getY()-50,p);
                         }
-                        sprite.move();
                     }
 
                     for (Sprite sprite: sprites) {
-
                         canvas.drawBitmap(sprite.getMouse(),sprite.getX(),sprite.getY(),p);
                     }
 
@@ -187,6 +186,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             Y=(float) Ys[(int)(Math.random()*Xs.length)]*GameView.this.getHeight();
             top=false;
             beat=false;
+            touchX=-1;
+            touchY=-1;
         }
     }
 }
